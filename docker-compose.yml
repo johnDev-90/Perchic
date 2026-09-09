@@ -1,0 +1,47 @@
+services:
+  client:
+    build: ./client
+    ports:
+      - "3001:3001"
+    develop:
+      watch:
+        - action: sync
+          path: ./client
+          target: /app
+          ignore: 
+            - node_modules/
+        
+        - action: rebuild
+          path: ./client/package.json
+
+     
+  server:
+    build: ./server
+    ports:
+      - "3000:3000"
+    develop:
+      watch:
+        - action: sync
+          path: ./server
+          target: /app
+          ignore:
+           - node_modules/
+
+        - action: rebuild
+          path: ./server/package.json
+        
+
+  db:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        POSTGRES_DB: ${POSTGRES_DB}
+      
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+    db-data:
