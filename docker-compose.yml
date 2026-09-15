@@ -16,7 +16,9 @@ services:
 
      
   server:
-    build: ./server
+    build: 
+      context: ./server
+      dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
     develop:
